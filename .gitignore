@@ -1,1 +1,12 @@
-.venv
+.venv/
+__pycache__/
+*.py[cod]
+
+output/*
+!output/.gitkeep
+
+.DS_Store
+.env
+
+ui/node_modules/
+ui/dist/
