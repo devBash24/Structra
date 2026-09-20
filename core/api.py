@@ -1,8 +1,8 @@
 from pathlib import Path
 import webview
 from core.extractors.docling_extractor import DoclingExtractor
-from exporters.excel_exporter import ExcelExporter
-from exporters.word_exporter import WordExporter
+from core.exporters.excel_exporter import ExcelExporter
+from core.exporters.word_exporter import WordExporter
 
 class StructraAPI:
     def __init__(self):
