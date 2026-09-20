@@ -1,8 +1,8 @@
 import argparse
 from pathlib import Path
 from core.extractors.docling_extractor import DoclingExtractor
-from core.extractors.excel_exporter import ExcelExporter
-from core.extractors.word_exporter import WordExporter
+from core.exporters.excel_exporter import ExcelExporter
+from core.exporters.word_exporter import WordExporter
 
 
 def main():
