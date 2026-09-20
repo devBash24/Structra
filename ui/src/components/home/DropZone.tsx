@@ -1,7 +1,12 @@
 import { FileText } from "lucide-react";
 import { useRef, useState } from "react";
+import type { ChangeEvent, DragEvent } from "react";
 
-export function DropZone() {
+type DropZoneProps = {
+  onFileSelected: (file: File) => void;
+};
+
+export function DropZone({ onFileSelected }: DropZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -9,37 +14,46 @@ export function DropZone() {
     inputRef.current?.click();
   }
 
-  function handleDragOver(event: React.DragEvent<HTMLDivElement>) {
+  function handleDragOver(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDragging(true);
   }
 
-  function handleDragLeave(event: React.DragEvent<HTMLDivElement>) {
+  function handleDragLeave(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDragging(false);
   }
 
-  function handleDrop(event: React.DragEvent<HTMLDivElement>) {
+  function handleDrop(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDragging(false);
 
     const file = event.dataTransfer.files?.[0];
 
-    if (!file) {
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      console.warn("Only PDF files are supported.");
       return;
     }
 
-    console.log("Dropped file:", file);
+    onFileSelected(file);
   }
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
-    if (!file) {
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      console.warn("Only PDF files are supported.");
       return;
     }
 
-    console.log("Selected file:", file);
+    onFileSelected(file);
+
+    // Allows selecting the same file again later.
+    event.target.value = "";
   }
 
   return (
@@ -58,6 +72,7 @@ export function DropZone() {
         onClick={openFilePicker}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
             openFilePicker();
           }
         }}
